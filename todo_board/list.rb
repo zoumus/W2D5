@@ -67,30 +67,32 @@ class List
     end
 
     def print_priority
-        print_full_item(0)
+        print_full_item(0) 
     end
 
     def up(index, amount=1)
-        if self.valid_index?(index)
-            if (index - amount) <= 0
-                self[index], self[0] = self[0], self[index]
-            else
-                self[index], self[index - amount] = self[index - amount], @items[index]
-            end
-            return true
+        return false if !self.valid_index?(index)
+
+        while amount > 0 && index != 0 
+            self[index], self[index -1] = self[index-1], self[index]
+            index -= 1
+            amount -= 1
         end
-        false
+        true
     end
 
     def down(index, amount=1)
-        if self.valid_index?(index)
-            if (index + amount) >= @items.length-1
-                self[index], self[-1] = self[-1], self[index]
-            else
-                self[index], self[index + amount] = self[index + amount], self[index]
-            end
-            return true
+        return false if !self.valid_index?(index)
+
+        while amount > 0 && index != self.size-1
+            self[index], self[index +1] = self[index+1], self[index]
+            index += 1
+            amount -= 1
         end
-        false
+        true
+    end
+
+    def sort_by_date!
+        @items.sort_by! { |item| item.deadline }
     end
 end
